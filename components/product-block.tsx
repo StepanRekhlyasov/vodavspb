@@ -19,9 +19,9 @@ export default function ProdBlock({navigation, item, actions, cart} : any) {
             <View style={productStyle.infoWrapper}>
                 <Text style={gStyle.center}>{item.post_title}</Text>
                 <Text style={gStyle.center}>{item.price} рублей/шт. Заказ от: {item.qty} шт.</Text>
-                    {countInCart(item.ID) > 0 ? (
+                    {countInCart(item.ID, cart) > 0 ? (
                         <View style={{marginTop:'auto'}}>
-                            <Text style={gStyle.center}>Итого: {item.price*countInCart(item.ID)} руб.</Text>
+                            <Text style={gStyle.center}>Итого: {item.price*countInCart(item.ID, cart)} руб.</Text>
                             <View style={productStyle.quantityButtons}>
                                 <MyButton
                                     text={'-'}
@@ -31,7 +31,7 @@ export default function ProdBlock({navigation, item, actions, cart} : any) {
                                         count : removeOne({item, cart})
                                     })}}
                                     />
-                                <View style={productStyle.quantity}><Text>{countInCart(item.ID)}</Text></View>
+                                <View style={productStyle.quantity}><Text>{countInCart(item.ID, cart)}</Text></View>
                                 <MyButton
                                     text={'+'}
                                     style={productStyle.quantityButton}

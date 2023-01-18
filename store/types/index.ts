@@ -3,7 +3,8 @@ export interface Store {
     cart: Cart[],
     products: Product[],
     categories: {}[],
-    total_cost: number
+    total_cost: number,
+    addresses: string[]
 }
 export interface Cart {
     ID: Number, count: number

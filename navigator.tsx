@@ -1,5 +1,7 @@
 import React from "react";
 import Main from "./Screens/Main";
+import Map from "./Screens/Map";
+// import YaMap from "./Screens/YaMap.tsx (android only)";
 import Cart from "./Screens/Cart";
 import Catalog from "./Screens/Catalog";
 import Profile from "./Screens/Profile";
@@ -10,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Platform } from 'react-native';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -19,6 +22,7 @@ import Gated from "./Screens/Gated";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
 function MyTabs({total} : any) {
   return (
     <Tab.Navigator>
@@ -27,6 +31,7 @@ function MyTabs({total} : any) {
           <MaterialCommunityIcons name="home" color={color} size={size} />
         ),
       }}/>
+      
       <Tab.Screen name="Shop" component={MyCatalog} 
         options={{
           headerShown:false, title: "Каталог",
@@ -60,11 +65,23 @@ function MyCatalog() {
   );
 }
 
+function MyMap(){
+  return (
+    <Stack.Navigator>
+        <Stack.Screen name="Map" component={Map} options={{
+          headerShown:false,
+        }}
+        />
+    </Stack.Navigator>
+  )
+}
+
 function MyProfile(){
   return(
     <Stack.Navigator>
-        { 0 ? (
-            <Tab.Screen name="Профиль" component={Profile} options={{
+        { 1 ? (
+            <Tab.Screen name="Profile" component={Profile} options={{
+              headerShown:false,
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="account-box" color={color} size={size} />
               ),
@@ -77,23 +94,31 @@ function MyProfile(){
             }}/>
           )
         }
+      <Stack.Screen name="Map" component={Map} options={{
+        headerShown:false,
+      }}
+      />
       <Stack.Screen name="Otp" component={Otp} />
       <Stack.Screen name="Gated" component={Gated} />
     </Stack.Navigator>
   )
 }
 
-function Navigate({total} : any) {
+function Navigate({total, addresses} : any) {
   return (
     <NavigationContainer>
-      <MyTabs total={total} />
+      {addresses.length>0? (
+        <MyTabs total={total} />
+      ):(
+        <MyMap/>
+      )}
     </NavigationContainer>
   );
 }
 
 const mapStateToProps = (state : any) => {
-  const { total } = state
-  return { total }
+  const { total, addresses } = state
+  return { total, addresses }
 };
 
 const mapDispatchToProps = (dispatch : any) => ({

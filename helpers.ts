@@ -1,5 +1,4 @@
-import type { Store, Cart, Product } from './store/types'
-import state from './store/configureStore'
+import type { Cart, Product } from './store/types'
 
 export function inCart(id : Number, cart : Cart[]){
     let cloneCart = [...cart]
@@ -16,11 +15,10 @@ export function inCart(id : Number, cart : Cart[]){
         }
     }
 }
-export function countInCart(id : Number){
-    const cloneCart = state.getState().cart
-    const index = cloneCart.findIndex((item : any) => item.ID == id)
-    if(cloneCart[index]){
-        return cloneCart[index].count
+export function countInCart(id : Number, cart : Cart[]){
+    const index = cart.findIndex((item : any) => item.ID == id)
+    if(cart[index]){
+        return cart[index].count
     } else {
         return 0
     }
