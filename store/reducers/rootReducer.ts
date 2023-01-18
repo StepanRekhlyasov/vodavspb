@@ -9,7 +9,8 @@ const INITIAL_STATE : Store = {
     cart: [],
     products: [],
     categories: [],
-    total_cost: 0
+    total_cost: 0,
+    addresses: []
 }
 const reducer = (state : Store = INITIAL_STATE, action : any) => {
     switch(action.type) {
@@ -24,6 +25,29 @@ const reducer = (state : Store = INITIAL_STATE, action : any) => {
             return {...state, products: action.payload};
         case SAVE_CATEGORIES: 
             return {...state, categories: action.payload}
+        case 'ADDRESS_ADD':
+            if([...state.addresses].find((row)=>{
+                return row === action.payload.address
+            })) {
+                window.alert('Такой адрес уже добавлен')
+                return state
+            } else if(!action.payload.address) {
+                window.alert('Нельзя добавить пустой адрес')
+                return state
+            } 
+            return {...state, addresses: [...state.addresses, action.payload.address]}
+        case 'ADDRESS_REMOVE':
+            const deleteAdressIndex = [...state.addresses].findIndex((row)=>{
+                return row === action.payload.address
+            })
+            if(deleteAdressIndex >= 0) {
+                const cloneAddresses = [...state.addresses]
+                cloneAddresses.splice(deleteAdressIndex, 1)
+                return {...state, addresses: cloneAddresses}
+            } else {
+                window.alert('Ошибка удаления адреса')
+                return state
+            }
         default:
             return state;
     }

@@ -18,13 +18,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyBZMoYh_5SZl81ILzxF4Tttc5NVk0y0xL4"
+      },
+      "bundleIdentifier": "com.anonymous.vodavspb"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCvFajV9y_8kG2C9k45Sg38i5WTfjwqmZQ"
+        }
+      },
+      "package": "com.anonymous.vodavspb"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -34,6 +44,11 @@
             "@twotalltotems/react-native-otp-input"
           ]
         }
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ff8ad307-d229-470d-9024-6d64f41a3b1f"
       }
     }
   }

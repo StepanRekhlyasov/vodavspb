@@ -4,33 +4,13 @@ import { gStyle } from '../styles/style'
 import { FlatGrid } from 'react-native-super-grid';
 import * as SplashScreen from 'expo-splash-screen';
 import { TOP_PRODUCTS } from '../store/constants'
-import { productStyle } from '../styles/product'
+// import { productStyle } from '../styles/product'
 import ProdBlock from '../components/product-block'
 import { connect } from 'react-redux';
 import { addToCart, saveProducts } from '../store/actions/cart';
 import { bindActionCreators } from 'redux';
 
-import YaMap from 'react-native-yamap';
-import { MAP_KEY } from '../store/constants'
-
-
-
-// const Map = () => {
-// //   YaMap.init(MAP_KEY);
-//   return (
-//     <YaMap
-//       userLocationIcon={{ uri: 'https://www.clipartmax.com/png/middle/180-1801760_pin-png.png' }}
-//       initialRegion={{
-//         lat: 50,
-//         lon: 50,
-//         zoom: 10,
-//         azimuth: 80,
-//         tilt: 100
-//       }}
-//       style={{ flex: 1 }}
-//     />
-//   );
-// };
+// import MapView from 'react-native-maps';
 
 
 function Main({cart, products, actions, navigation} : any) {
@@ -80,20 +60,9 @@ function Main({cart, products, actions, navigation} : any) {
     const data = products.filter((i : any)=>{
         return TOP_PRODUCTS.includes(i.ID)
     })
-
+    
     return (
         <SafeAreaView style={gStyle.box} onLayout={onLayoutRootView}>
-            {/* <YaMap
-                userLocationIcon={{ uri: 'https://www.clipartmax.com/png/middle/180-1801760_pin-png.png' }}
-                initialRegion={{
-                    lat: 50,
-                    lon: 50,
-                    zoom: 10,
-                    azimuth: 80,
-                    tilt: 100
-                }}
-                style={{ flex: 1 }}
-            /> */}
             <Text style={{fontSize: 21,textAlign:'center',marginTop:20, fontWeight: 'bold', padding:10,}}>Добро пожаловать в интернет-магазин "Водяной"!</Text>
             <FlatGrid 
             refreshControl={
