@@ -5,7 +5,7 @@ import { SafeAreaView, RefreshControl } from 'react-native';
 import { gStyle } from '../styles/style';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
-import ProdBlock from '../components/product-block'
+import ProdBlock from '../components/Parts/product-block'
 import * as SplashScreen from 'expo-splash-screen';
 
 import { connect } from 'react-redux';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { productStyle } from '../styles/product'
-import { gStyle } from '../styles/style'
-import { addOne, removeOne, countInCart } from '../helpers'
+import { productStyle } from '../../styles/product'
+import { gStyle } from '../../styles/style'
+import { addOne, removeOne, countInCart } from '../../helpers'
 import MyButton from './button'
 
 export default function ProdBlock({navigation, item, actions, cart} : any) {
@@ -25,7 +25,7 @@ export default function ProdBlock({navigation, item, actions, cart} : any) {
                             <View style={productStyle.quantityButtons}>
                                 <MyButton
                                     text={'-'}
-                                    style={productStyle.quantityButton}
+                                    // style={productStyle.quantityButton}
                                     action={()=>{actions.addToCart({
                                         ID : item.ID,
                                         count : removeOne({item, cart})
@@ -34,7 +34,7 @@ export default function ProdBlock({navigation, item, actions, cart} : any) {
                                 <View style={productStyle.quantity}><Text>{countInCart(item.ID, cart)}</Text></View>
                                 <MyButton
                                     text={'+'}
-                                    style={productStyle.quantityButton}
+                                    // style={productStyle.quantityButton}
                                     action={()=>{actions.addToCart({
                                         ID : item.ID,
                                         count : addOne({item, cart})
@@ -44,13 +44,13 @@ export default function ProdBlock({navigation, item, actions, cart} : any) {
                         </View>
                         ):(
                             <View style={{marginTop:'auto'}}>
-                                <MyButton 
+                                {/* <MyButton 
                                 text={'Добавить в корзину'} 
                                 style={productStyle.button}
                                 action={()=>{actions.addToCart({
                                     ID : item.ID,
                                     count : addOne({item, cart})
-                                })}}/>
+                                })}}/> */}
                             </View>
                     )}
             </View>

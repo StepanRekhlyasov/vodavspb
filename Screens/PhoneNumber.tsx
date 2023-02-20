@@ -5,16 +5,15 @@ import PhoneInput from "react-native-phone-number-input";
 import { sendSmsVerification } from "../api/verify";
 
 const PhoneNumber = ({ navigation } : any) => {
- const [value, setValue] = useState("");
- const [formattedValue, setFormattedValue] = useState("");
- const phoneInput = useRef<PhoneInput>(null);
+const [value, setValue] = useState("");
+const [formattedValue, setFormattedValue] = useState("");
+const phoneInput = useRef<PhoneInput>(null);
 
  return (
-   <>
      <View style={styles.container}>
        <SafeAreaView style={styles.wrapper}>
          <View style={styles.welcome}>
-           <Text>Welcome!</Text>
+           <Text>Номер телефона:</Text>
          </View>
          <PhoneInput
            ref={phoneInput}
@@ -29,7 +28,6 @@ const PhoneNumber = ({ navigation } : any) => {
            }}
            countryPickerProps={{ withAlphaFilter: true }}
            withShadow
-           autoFocus
          />
          <TouchableOpacity
            style={styles.button}
@@ -47,7 +45,6 @@ const PhoneNumber = ({ navigation } : any) => {
          </TouchableOpacity>
        </SafeAreaView>
      </View>
-   </>
  );
 };
 

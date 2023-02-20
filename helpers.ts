@@ -1,4 +1,5 @@
-import type { Cart, Product } from './store/types'
+import { useStore } from 'react-redux'
+import type { Address, Cart, Product, Store } from './store/types'
 
 export function inCart(id : Number, cart : Cart[]){
     let cloneCart = [...cart]
@@ -73,5 +74,66 @@ export function getProductPrice(id: Number, products : Product[]){
         return result.price
     } else {
         return 0
+    }
+}
+
+export function geocodeResultToStreet(json : Geocoder.GeocoderResponse) {
+    let result = json.results.find((row)=>{
+        return row.types.includes('street_address')
+    })
+    if(!result){
+        result = json.results[0]
+    }
+    const country = result?.address_components.find((row)=>{
+        return row.types.includes('country')
+    })
+    const city = result?.address_components.find((row)=>{
+        return row.types.includes('locality')
+    })
+    if((!country || country?.short_name!='RU') || (!city || city?.short_name!='СПБ')){
+        return { addressWarning: 'Неверный адрес' }
+    }
+    const test = result?.address_components.filter((row)=>{
+        return row.types.includes('route') || row.types.includes('street_number')
+    })
+    if(test.length<2){
+        return { 
+            street : null,
+            formatted_address: null,
+            addressWarning: 'Неверный адрес' 
+        }
+    }
+    const street = test.find((row)=>{
+        return row.types.includes('route')
+    })?.short_name
+    const street_number = test.find((row)=>{
+        return row.types.includes('street_number')
+    })?.long_name
+    if(!street || !street_number){
+        return { 
+            street : null,
+            formatted_address: null,
+            addressWarning: 'Неверный адрес'
+        }
+    }
+    const address = street + ', ' + street_number?.replace(/ /g, '\u00A0')
+    return {
+        street : address,
+        city: city.long_name,
+        formatted_address: result.formatted_address,
+        addressWarning: ''
+    }
+}
+
+export function getSelectedAddress(){
+    const store : any = useStore().getState()
+    const addresses = store.addresses
+    const index = store.selected_address
+    if(addresses[index]){
+        return addresses[index]
+    } else if (addresses[0]) {
+        return addresses[0]
+    } else {
+        return null
     }
 }

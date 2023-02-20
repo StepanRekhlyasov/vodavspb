@@ -1,12 +1,16 @@
 import { StyleSheet } from "react-native";
+import { Platform, StatusBar } from 'react-native';
 
 export const gStyle = StyleSheet.create({
     box: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: 'red',
+        paddingHorizontal: 19,
+        paddingVertical: Platform.OS === "android" ? StatusBar.currentHeight?StatusBar.currentHeight+20:20:20,
+		flex: 1
     },
+	pH: {
+		paddingHorizontal: 19
+	},
     button: {
         backgroundColor: 'blue'
     },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView, Text } from 'react-native';
 import { productStyle } from '../styles/product'
 import { gStyle } from '../styles/style'
@@ -6,15 +6,21 @@ import { FlatGrid } from 'react-native-super-grid';
 import { connect } from 'react-redux';
 import { addToCart } from '../store/actions/cart';
 import { bindActionCreators } from 'redux';
-import { useNavigation } from '@react-navigation/native';
-import ProdBlock from '../components/product-block'
-import MyButton from '../components/button'
-
+import { useNavigation, useRoute } from '@react-navigation/native';
+import ProdBlock from '../components/Parts/product-block'
+import MyButton from '../components/Parts/button'
+import { ImOnScreen } from '../store/actions/app'
 
 function Cart({products, cart, actions, total, total_cost} : any) {
+	const navigation = useNavigation();
 
-
-    const navigation = useNavigation();
+	const route = useRoute()
+	useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            actions.ImOnScreen(route.name)
+        });
+        return unsubscribe;
+    }, [navigation]);
 
     let cart_ids : Number[] = []
     cart.map((row : any)=>{
@@ -35,18 +41,6 @@ function Cart({products, cart, actions, total, total_cost} : any) {
                 <Text style={{fontSize:20,fontWeight:'bold'}}>Детали заказа</Text>
                 <Text>Всего в корзине {total} товаров на {total_cost} рублей</Text>
                 <MyButton
-                    style={{
-                        height: 30,
-                        borderRadius: 10,
-                        backgroundColor: '#f9c5c5',
-                        padding: 10,
-                        marginBottom: 50,
-                        marginTop: 20,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        textAlign: 'center'
-                    }}
                     text={'Заказать'}
                 />
             </SafeAreaView>
@@ -55,6 +49,12 @@ function Cart({products, cart, actions, total, total_cost} : any) {
         return (
             <SafeAreaView style={gStyle.box}>
                 <Text>Ваша корзина пуста</Text>
+                <MyButton
+                    text={'Не жми меня'}
+                    action={()=>{
+                        
+                    }}
+                />
             </SafeAreaView>
         )
     }
@@ -67,7 +67,8 @@ const mapStateToProps = (state : any) => {
 
 const mapDispatchToProps = (dispatch : any) => ({
     actions: bindActionCreators({
-        addToCart
+        addToCart,
+		ImOnScreen
     }, dispatch),
 });
 

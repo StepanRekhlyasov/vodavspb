@@ -4,7 +4,8 @@ export interface Store {
     products: Product[],
     categories: {}[],
     total_cost: number,
-    addresses: string[]
+    addresses: Address[],
+    selected_address: number | undefined
 }
 export interface Cart {
     ID: Number, count: number
@@ -14,4 +15,16 @@ export interface Product {
     price: number,
     qty: number,
     acf?: {}
+}
+export interface Address {
+    street: string,
+    entrance?: string,
+    intercom?: string,
+    apt?: string,
+    floor?: string,
+    info?: string,
+    lat?: number,
+    lng?: number,
+    formatted_address?: string,
+    city?: string,
 }
