@@ -7,7 +7,13 @@ export default function AddressHeader(){
     const selectedAddress = getSelectedAddress()
     return (
 		<Pressable 
-			style={{flexDirection:'row', alignItems:'center', justifyContent:'center', paddingLeft: 19}}
+			style={{
+				flexDirection:'row', 
+				alignItems:'center', 
+				justifyContent:'flex-start', 
+				paddingLeft: 19,
+				width: 300
+			}}
 			onPress={()=>{Alert.alert('Поздравляю','Ты нажал')}}
 		>
 			<Image style={{width:14, height:18, marginRight: 11}} source={require('../../assets/geoposition.png')}></Image>

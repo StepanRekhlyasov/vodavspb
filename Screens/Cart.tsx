@@ -11,6 +11,10 @@ import ProdBlock from '../components/Parts/product-block'
 import MyButton from '../components/Parts/button'
 import { ImOnScreen } from '../store/actions/app'
 
+/** Components */
+import ProductCartControls from '../components/Functional/ProductCartControls';
+import BottomSheet from '../components/Functional/BottomSheet';
+
 function Cart({products, cart, actions, total, total_cost} : any) {
 	const navigation = useNavigation();
 
@@ -33,7 +37,7 @@ function Cart({products, cart, actions, total, total_cost} : any) {
     })
     if(data.length>0){
         return (
-            <SafeAreaView style={gStyle.box}>
+            <SafeAreaView style={{paddingHorizontal: 12}}>
                 <FlatGrid 
                 itemDimension={1000} style={productStyle.gridView} data={data} renderItem={({ item  } : any) => (
                     <ProdBlock item={item} navigation={navigation} actions={actions} cart={cart}/>
@@ -47,7 +51,7 @@ function Cart({products, cart, actions, total, total_cost} : any) {
         )
     } else {
         return (
-            <SafeAreaView style={gStyle.box}>
+            <SafeAreaView style={{paddingHorizontal: 12}}>
                 <Text>Ваша корзина пуста</Text>
                 <MyButton
                     text={'Не жми меня'}
@@ -55,6 +59,7 @@ function Cart({products, cart, actions, total, total_cost} : any) {
                         
                     }}
                 />
+				<BottomSheet/>
             </SafeAreaView>
         )
     }

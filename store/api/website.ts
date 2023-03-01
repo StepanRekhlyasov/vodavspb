@@ -6,7 +6,7 @@ data.append("key", 'AMAKEYVERYSECRETKEY');
 
 export default {
 	fetchShop : async () => {
-		const result = await axios.post(`${baseUrl}/api/posts/`, data )
+		const result = await axios.get(`${baseUrl}/api/posts/` )
 		return result?.data
 	}
 }

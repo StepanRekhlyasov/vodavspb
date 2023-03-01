@@ -12,7 +12,7 @@ import { Entypo } from '@expo/vector-icons';
 export default function Burger({leftInclude} : {leftInclude?: JSX.Element}) {
     const navigation = useNavigation();
     return (
-        <View style={styles.headerWrapper}>
+        <View style={styles.burgerWrapper}>
             <Pressable style={styles.burger} onPress={()=>navigation.dispatch(DrawerActions.openDrawer())}>
                 <Entypo name="menu" size={24} color="black" />
             </Pressable>
@@ -21,7 +21,7 @@ export default function Burger({leftInclude} : {leftInclude?: JSX.Element}) {
 }
 
 const styles = StyleSheet.create({
-    headerWrapper: {
+    burgerWrapper: {
         alignItems: 'flex-end',
         justifyContent: 'space-between',
         flexDirection: 'row',

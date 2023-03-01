@@ -41,7 +41,7 @@ function TabsNavigator ({total} : any) {
 				},
 		  	}}
 		>
-            <Tab.Screen name="Главная" component={Main} options={{
+            <Tab.Screen name="Главная" component={MyCatalog} options={{
                 headerShown:false,
                 tabBarIcon: ({ color, size }) => (
 					<Feather name="list" color={color} size={size} />
@@ -82,7 +82,7 @@ function TabsNavigator ({total} : any) {
 function MyCatalog() {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="Каталог" component={Catalog} options={{headerShown:false}} />
+        <Stack.Screen name="Каталог" component={Main} options={{headerShown:false}} />
         <Stack.Screen name="Category" component={Category} options={({ route } : any) => ({ title: route.params.title })} />
         <Stack.Screen name="Product" component={Product} options={({ route } : any) => ({ title: route.params.title })} />
       </Stack.Navigator>

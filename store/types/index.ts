@@ -8,13 +8,14 @@ export interface Store {
     selected_address: number | undefined
 }
 export interface Cart {
-    ID: Number, count: number
+    ID: number, count: number
 }
 export interface Product { 
-    ID: Number, 
-    price: number,
-    qty: number,
-    acf?: {}
+    ID: number, 
+	name: string,
+	category: number,
+    prices: {qty: number, price: number}[],
+    min_qty: number,
 }
 export interface Address {
     street: string,

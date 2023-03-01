@@ -31,19 +31,26 @@ const selected_address = (state = 0, action : any) => {
     }
     
 }
-const cart = (state = [], action : any) => {
-    return state
-    // switch(action.type) {
-    //     case CART_ADD: 
-    //         if(inCart(action.payload.ID, [...state])?.index >= 0){
-    //             const CART_ADD_cloneCart = [...state.cart];
-    //             CART_ADD_cloneCart.splice(inCart(action.payload.ID, CART_ADD_cloneCart)?.index, 1, action.payload)
-    //             return {...state, cart: CART_ADD_cloneCart, total: countTotalCart(CART_ADD_cloneCart), total_cost: countCostCart(CART_ADD_cloneCart, state.products)}
-    //         }
-    //         return {...state, cart: [...state.cart, action.payload], total: countTotalCart([...state.cart, action.payload]), total_cost: countCostCart([...state.cart, action.payload], state.products)}
-    //     default: 
-    //         return state
-    // }
+const cart = (state : {ID: number, count: number}[] = [], action : any) => {
+	switch(action.type) {
+        case CART_ADD:
+			const cartPosition = state.findIndex((row)=>row.ID == action.payload.ID)
+			if(cartPosition !== -1){
+				if(state[cartPosition].count + action.payload.count < 1){
+					return state.slice(0, cartPosition).concat(state.slice(cartPosition + 1));
+				}
+				return state.map((row)=>{
+					if(row.ID == action.payload.ID){
+						row.count = row.count + action.payload.count
+					}
+					return row
+				})
+			} else {
+				return [...state, action.payload]
+			}
+        default: 
+            return state
+    }
 }
 
 const TEST_ADDRESS = [

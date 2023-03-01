@@ -47,7 +47,7 @@ const DrawerNavigator = ({parts, screen} : any) => {
 	/** обработчик хедера при изменении экрана */
 	function setupHeader(){
 		/** скрыть главный хедер */
-		if(['Gated'].includes(screen)){
+		if(['Gated', 'Category'].includes(screen)){
 			setTitle(false)
 			return
 		} else {
@@ -95,7 +95,7 @@ const DrawerNavigator = ({parts, screen} : any) => {
 				swipeEnabled : false,
                 headerRight: () => headerRight,
 				headerLeft: () => headerLeft,
-                headerStyle: {borderBottomWidth: 0},
+                headerStyle: {borderBottomWidth: 0, backgroundColor: '#F5F5F5', borderColor: 'red'},
                 title: '',
 				headerShown: headerTitle,
             }} />

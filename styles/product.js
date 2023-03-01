@@ -7,7 +7,6 @@ export const productStyle = StyleSheet.create({
         justifyContent: 'center'
     },  
     quantityButton: {
-        display: 'flex',
         width: 60,
         height: 30,
         borderRadius: 10,
@@ -25,7 +24,6 @@ export const productStyle = StyleSheet.create({
         textAlign: 'center',
     },
     quantity : {
-        display: 'flex',
         flex: 1,
         width: 30,
         height: 30,
@@ -34,30 +32,33 @@ export const productStyle = StyleSheet.create({
         margin: 'auto'
     },
     itemImgWrapper: {
+		width: '100%',
+		height: 140,
+		paddingVertical: 8
     },
+    itemImg: {
+		flex:1, 
+		resizeMode: 'contain',
+	},
     infoWrapper: {
         flex: 1,
         height: '100%',
-        justifyContent: 'flex-start',
+		width: '100%',
+        justifyContent: 'space-between',
     },
     gridView: {
         marginTop: 10,
         flex: 1,
     },
-    itemImg: {
-        width: 100,
-        height: 100,
-    },
     itemContainer: {
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        flexDirection: 'row',
-        flex: 1,
-        borderRadius: 5,
-        padding: 10,
-        gap: 10,
-        height: 150,
-        borderWidth: 1,
+        alignItems: 'center',
+		flexDirection: 'column',
+		flex: 1,
+		width: '100%',
+		maxWidth: '49%',
+        borderRadius: 16,
+		backgroundColor: 'purple'
     },
     itemName: {
         fontSize: 16,
