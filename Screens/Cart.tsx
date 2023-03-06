@@ -13,7 +13,7 @@ import { ImOnScreen } from '../store/actions/app'
 
 /** Components */
 import ProductCartControls from '../components/Functional/ProductCartControls';
-import BottomSheet from '../components/Functional/BottomSheet';
+import ProductBottomSheet from '../components/Functional/ProductBottomSheet';
 
 function Cart({products, cart, actions, total, total_cost} : any) {
 	const navigation = useNavigation();
@@ -32,37 +32,17 @@ function Cart({products, cart, actions, total, total_cost} : any) {
             cart_ids.push(row.ID) 
         }
     })
-    const data = products.filter((row : any)=>{
-        return cart_ids.includes(row.ID)
-    })
-    if(data.length>0){
-        return (
-            <SafeAreaView style={{paddingHorizontal: 12}}>
-                <FlatGrid 
-                itemDimension={1000} style={productStyle.gridView} data={data} renderItem={({ item  } : any) => (
-                    <ProdBlock item={item} navigation={navigation} actions={actions} cart={cart}/>
-                )} />
-                <Text style={{fontSize:20,fontWeight:'bold'}}>Детали заказа</Text>
-                <Text>Всего в корзине {total} товаров на {total_cost} рублей</Text>
-                <MyButton
-                    text={'Заказать'}
-                />
-            </SafeAreaView>
-        )
-    } else {
-        return (
-            <SafeAreaView style={{paddingHorizontal: 12}}>
-                <Text>Ваша корзина пуста</Text>
-                <MyButton
-                    text={'Не жми меня'}
-                    action={()=>{
-                        
-                    }}
-                />
-				<BottomSheet/>
-            </SafeAreaView>
-        )
-    }
+    return (
+		<SafeAreaView style={{paddingHorizontal: 12}}>
+			<Text>{JSON.stringify(cart)}</Text>
+			<MyButton
+				text={'Не жми меня'}
+				action={()=>{
+					
+				}}
+			/>
+		</SafeAreaView>
+	)
 }
 
 const mapStateToProps = (state : any) => {

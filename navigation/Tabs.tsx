@@ -28,7 +28,8 @@ import { Feather, Octicons } from '@expo/vector-icons';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-function TabsNavigator ({total} : any) {
+function TabsNavigator ({cart} : any) {
+	const total = cart.reduce((accumulator : number, currentValue : { count: number })=>{return accumulator + currentValue.count}, 0)
     return (
         <Tab.Navigator
 			screenOptions={{
@@ -59,7 +60,6 @@ function TabsNavigator ({total} : any) {
                 tabBarIcon: ({ color, size }) => (
 					<Octicons name="history" color={color} size={size} />
                 ),
-                tabBarBadge: total?total:null,
             }} />
             {/* <Tab.Screen name="Shop" component={MyCatalog} 
                 options={{
@@ -129,8 +129,8 @@ function MyMap(){
 }
 
 const mapStateToProps = (state : any) => {
-  const { total, addresses } = state
-  return { total, addresses }
+  const { cart, addresses } = state
+  return { cart, addresses }
 };
 
 const mapDispatchToProps = (dispatch : any) => ({

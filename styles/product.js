@@ -57,6 +57,7 @@ export const productStyle = StyleSheet.create({
 		flex: 1,
 		width: '100%',
 		maxWidth: '49%',
+		// height: 295,
         borderRadius: 16,
 		backgroundColor: 'purple'
     },

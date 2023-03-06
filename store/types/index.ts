@@ -14,6 +14,7 @@ export interface Product {
     ID: number, 
 	name: string,
 	category: number,
+	image: string,
     prices: {qty: number, price: number}[],
     min_qty: number,
 }
@@ -29,3 +30,17 @@ export interface Address {
     formatted_address?: string,
     city?: string,
 }
+
+export interface Category {
+	ID: number,
+	name: string,
+	image: string,
+}
+interface MyTypes {
+	Address : Address,
+	Product : Product,
+	Cart : Cart,
+	Store : Store,
+	Category: Category
+}
+export default MyTypes
