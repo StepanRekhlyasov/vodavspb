@@ -37,7 +37,10 @@ const cart = (state : {ID: number, count: number}[] = [], action : any) => {
 			const cartPosition = state.findIndex((row)=>row.ID == action.payload.ID)
 			if(cartPosition !== -1){
 				if((state[cartPosition].count + action.payload.count) < 1){
-					return state.slice(0, cartPosition).concat(state.slice(cartPosition + 1));
+					return [
+						...state.slice(0, cartPosition),
+						...state.slice(cartPosition + 1)
+					]
 				} else {
 					return state.map((row)=>{
 						if(row.ID == action.payload.ID){
@@ -122,7 +125,8 @@ const ProductBottomSheet = (state = {
 }
 const INITIAL_SHOP = {
 	categories: [],
-	products: []
+	products: [],
+	indexes: {}
 }
 const shop = (state = INITIAL_SHOP, action : any) => {
 	switch(action.type) {

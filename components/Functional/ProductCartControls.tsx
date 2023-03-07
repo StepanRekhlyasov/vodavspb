@@ -16,10 +16,10 @@ type Payload = {
 	inCart: any
 }
 
-const ProductCartControls = memo(({product, actions, inCart, inModal = false} : Payload) => {
+const ProductCartControls = ({product, actions, inCart, inModal = false} : Payload) => {
 	const button_text = useCallback(() => {
 		if(product.min_qty>1){
-			return product.prices[0].price*product.min_qty + ' руб. ('+product.min_qty+' шт.)'
+			return parseInt(product.prices[0].price)*product.min_qty + ' руб. ('+product.min_qty+' шт.)'
 		}
 		return product.prices[0].price + ' руб.'
 	},[])
@@ -48,37 +48,38 @@ const ProductCartControls = memo(({product, actions, inCart, inModal = false} : 
 				})
 			}
 		}
-	}, [])
+	}, [inCart])
 	const minus = useCallback(()=>{
 		if(inCart && (inCart - 1) < product.min_qty){
 			actions.addToCart({
 				ID : product.ID,
 				count : -product.min_qty
 			})
+		} else {
+			actions.addToCart({
+				ID : product.ID,
+				count : -1
+			})
 		}
-		actions.addToCart({
-			ID : product.ID,
-			count : -1
-		})
-	}, [])
+	}, [inCart])
 	if(inCart && inCart > 0){
 		return (
 			<View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
 				<MyButton 
 					text={ "-" } 
 					options = {{
-						height: 50,
-						width: 50,
+						height: 40,
+						width: 40,
 						fontSize: 14,
 					}}
 					action={ minus }
 				/>
-				<Text>{inCart}</Text>
+				<Text style={{width:70, textAlign:'center'}}>{inCart}</Text>
 				<MyButton 
 					text={ "+" } 
 					options = {{
-						height: 50,
-						width: 50,
+						height: 40,
+						width: 40,
 						fontSize: 14,
 					}}
 					action={ ()=>{
@@ -95,14 +96,14 @@ const ProductCartControls = memo(({product, actions, inCart, inModal = false} : 
 		<MyButton 
 			text={ button_text() } 
 			options = {{
-				height: 50,
+				height: 40,
 				fontSize: 14,
-				width: '100%'
+				width: 140,
 			}}
 			action={ button_action() }
 		/>
 	)
-})
+}
 
 const mapStateToProps = (state : any, props : any) => {
 	const { cart } = state

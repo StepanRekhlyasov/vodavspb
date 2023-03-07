@@ -15,7 +15,7 @@ export interface Product {
 	name: string,
 	category: number,
 	image: string,
-    prices: {qty: number, price: number}[],
+    prices: {qty: string, price: string}[],
     min_qty: number,
 }
 export interface Address {

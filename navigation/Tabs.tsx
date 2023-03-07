@@ -13,7 +13,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
+import { Platform, View, Text } from 'react-native';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -22,7 +22,7 @@ import Otp from "../Screens/Otp";
 import Gated from "../Screens/Gated";
 // import Header from "../components/Parts/Burger";
 /** Icons */
-import { Feather, Octicons } from '@expo/vector-icons'; 
+import { Feather, Octicons, AntDesign } from '@expo/vector-icons'; 
 
 
 const Tab = createBottomTabNavigator();
@@ -40,21 +40,26 @@ function TabsNavigator ({cart} : any) {
 				tabBarItemStyle: {
 					height: 48
 				},
+				// tabBarLabel: (item)=><>{JSON.stringify(item)}</>
 		  	}}
 		>
-            <Tab.Screen name="Главная" component={MyCatalog} options={{
-                headerShown:false,
-                tabBarIcon: ({ color, size }) => (
-					<Feather name="list" color={color} size={size} />
-                ),
-            }}/>
-			<Tab.Screen name="Корзина" component={Cart} options={{
-                headerShown:false,
-                tabBarIcon: ({ color, size }) => (
-					<Feather name="shopping-cart" color={color} size={size} />
-                ),
-                tabBarBadge: total?total:null,
-            }} />
+            <Tab.Screen name="Главная" component={MyCatalog} 
+				options={{
+					headerShown:false,
+					tabBarIcon: ({ color, size }) => (
+						<AntDesign name="home" color={color} size={size} />
+					),
+				}}
+			/>
+			<Tab.Screen name="Корзина" component={Cart} 
+				options={{
+					headerShown:false,
+					tabBarIcon: ({ color, size }) => (
+						<Feather name="shopping-cart" color={color} size={size} />
+					),
+					tabBarBadge: total?total:null,
+				}} 
+			/>
 			<Tab.Screen name="История" component={History} options={{
                 headerShown:false,
                 tabBarIcon: ({ color, size }) => (

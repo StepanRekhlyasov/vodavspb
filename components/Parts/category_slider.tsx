@@ -3,23 +3,23 @@ import { View } from "react-native";
 import CatBlock from "./category-block";
 import MyTypes from "../../store/types";
 
-const CategorySlider = ({categories, sectionPosition, setSectionPosition, flatListRef} : {
+const CategorySlider = ({categories, sectionPosition, flatListRef, indexes} : {
 	categories: MyTypes['Category'][],
-	sectionPosition: string,
+	sectionPosition: number | undefined,
 	setSectionPosition: any,
-	flatListRef: any
+	flatListRef: any, 
+	indexes: any
 }) => {
+	// console.log('sections rerenders')
 	useEffect(()=>{
-		if(sectionPosition == 'Акции'){
-			sectionPosition = 'Вода'
-		}
 		const result = categories.map(
 			(item, index : number)=>(<CatBlock 
 				flatListRef={flatListRef}
 				key={index} 
 				item={item} 
-				active={item.name==sectionPosition?true:false}
+				active={item.ID === sectionPosition?true:false}
 				counter={{index: index, length: categories.length}}
+				indexes={indexes}
 			/>)
 		)
 		set_cat_grid(result)
@@ -27,14 +27,6 @@ const CategorySlider = ({categories, sectionPosition, setSectionPosition, flatLi
 
 	const [cat_grid, set_cat_grid] = useState<any>()
 	
-	// const cat_grid = useCallback(()=>{return categories.map(
-	// 	(item, index : number)=>(<CatBlock 
-	// 		key={index} 
-	// 		item={item} 
-	// 		counter={{index: index, length: categories.length}}
-	// 	/>)
-	// )}, [])
-	// console.log('cat_grid', cat_grid)
 	return (
 		cat_grid
 	)

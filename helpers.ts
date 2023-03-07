@@ -137,3 +137,49 @@ export function getSelectedAddress(){
         return null
     }
 }
+
+export const calcusCart = {
+	choosePrice: (prices : {qty: string, price: string}[], count: number) => {
+		if(!prices.length){
+			return 0
+		}
+		const sorted = [...prices].sort((a, b)=>{
+			if(parseInt(a.qty)<parseInt(b.qty)){
+				return 1
+			} else {
+				return -1
+			}
+		})
+		const result = sorted.find((price)=>{
+			const qty = parseInt(price.qty)
+			if(count>=qty){
+				return true
+			}
+		})
+		if(result){
+			return parseInt(result.price)
+		} else {
+			return 0
+		}
+	},
+	cartSum: ({cart, shop} : any) => {
+		return cart.reduce(
+			(accumulator : number, currentValue : {ID: number, count: number}) => {
+				const product = shop.products.find((productitem: any)=>{
+					return currentValue.ID == productitem.ID
+				})
+				return accumulator + calcusCart.choosePrice(product.prices, currentValue.count) * currentValue.count
+			},
+			0
+		)
+	},
+	sortedPrices: (prices : {price: string, qty: string}[]) => {
+		return [...prices].sort((a, b)=>{
+			if(parseInt(a.qty)>parseInt(b.qty)){
+				return 1
+			} else {
+				return -1
+			}
+		})
+	}	
+}
