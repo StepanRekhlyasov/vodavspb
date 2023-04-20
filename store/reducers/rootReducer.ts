@@ -1,56 +1,168 @@
-import { CART_ADD, SAVE_PRODUCTS, SAVE_CATEGORIES } from '../constants/index';
-import { inCart, countTotalCart, countCostCart } from '../../helpers'
-import type { Store } from '../types'
+import constants from '../constants/index';
+import type { Address, Store } from '../types'
+import {Alert} from 'react-native' 
+import { combineReducers } from 'redux'
+import MyTypes from '../types';
 
 
-
-const INITIAL_STATE : Store = {
-    total: 0,
-    cart: [],
-    products: [],
-    categories: [],
-    total_cost: 0,
-    addresses: []
+const user = (state : MyTypes['User'] = {is_auth: false}, action : any) => {
+	switch(action.type) {
+		case constants.SET_AUTH:
+			return {...state, is_auth: action.payload}
+        default: 
+            return state
+    }
 }
-const reducer = (state : Store = INITIAL_STATE, action : any) => {
+const products = (state = [], action : any) => {
     switch(action.type) {
-        case CART_ADD: 
-            if(inCart(action.payload.ID, [...state.cart])?.index >= 0){
-                const CART_ADD_cloneCart = [...state.cart];
-                CART_ADD_cloneCart.splice(inCart(action.payload.ID, CART_ADD_cloneCart)?.index, 1, action.payload)
-                return {...state, cart: CART_ADD_cloneCart, total: countTotalCart(CART_ADD_cloneCart), total_cost: countCostCart(CART_ADD_cloneCart, state.products)}
-            }
-            return {...state, cart: [...state.cart, action.payload], total: countTotalCart([...state.cart, action.payload]), total_cost: countCostCart([...state.cart, action.payload], state.products)}
-        case SAVE_PRODUCTS:
-            return {...state, products: action.payload};
-        case SAVE_CATEGORIES: 
-            return {...state, categories: action.payload}
-        case 'ADDRESS_ADD':
-            if([...state.addresses].find((row)=>{
-                return row === action.payload.address
-            })) {
-                window.alert('Такой адрес уже добавлен')
-                return state
-            } else if(!action.payload.address) {
-                window.alert('Нельзя добавить пустой адрес')
+        case constants.SAVE_PRODUCTS:
+            return [...state, action.payload]
+        default: 
+            return state
+    }
+    
+}
+const categories = (state = [], action : any) => {
+    switch(action.type) {
+        case constants.SAVE_CATEGORIES: 
+            return [...state, action.payload]
+        default: 
+            return state
+    }
+    
+}
+const selected_address = (state = 0, action : any) => {
+    switch(action.type) {
+        case constants.ADDRESS_CHOOSE:
+            return action.payload.index
+        default: 
+            return state
+    }
+    
+}
+const cart = (state : {ID: number, count: number}[] = [], action : any) => {
+	switch(action.type) {
+        case constants.CART_ADD:
+			const cartPosition = state.findIndex((row)=>row.ID == action.payload.ID)
+			if(cartPosition !== -1){
+				if((state[cartPosition].count + action.payload.count) < 1){
+					return [
+						...state.slice(0, cartPosition),
+						...state.slice(cartPosition + 1)
+					]
+				} else {
+					return state.map((row)=>{
+						if(row.ID == action.payload.ID){
+							row.count = row.count + action.payload.count
+						}
+						return row
+					})
+				}
+			} else {
+				if(action.payload.count<1){
+					return state
+				} else {
+					return [...state, action.payload]
+				}
+			}
+        default: 
+            return state
+    }
+}
+
+const TEST_ADDRESS = [
+    {
+        "city": "Санкт-Петербург",
+        "formatted_address": "пр. Королёва, 43 корпус 1, Санкт-Петербург, Россия, 197371",
+        "lat": 60.0217231,
+        "lng": 30.2553815,
+        "street": "пр. Королёва, 43 корпус 1",
+    },
+]
+const addresses = (state : Address[] = TEST_ADDRESS , action : any) => {
+    switch(action.type) {
+        case constants.ADDRESS_ADD:
+            if(!action.payload.street) {
+                Alert.alert('Ошибка','Нельзя добавить пустой адрес')
                 return state
             } 
-            return {...state, addresses: [...state.addresses, action.payload.address]}
-        case 'ADDRESS_REMOVE':
-            const deleteAdressIndex = [...state.addresses].findIndex((row)=>{
-                return row === action.payload.address
+            return [
+                ...state, {
+                    street: action.payload.street,
+                    lat: action.payload?.lat,
+                    lng: action.payload?.lng,
+                    city: action.payload?.city,
+                    formatted_address: action.payload?.formatted_address,
+                }
+            ]
+        case constants.ADDRESS_CHANGE:
+            return state.map((row : any, index)=>{
+                if(index === action.payload.index){
+                    row[action.payload.key] = action.payload.value
+                    return row
+                }
+                return row
             })
-            if(deleteAdressIndex >= 0) {
-                const cloneAddresses = [...state.addresses]
-                cloneAddresses.splice(deleteAdressIndex, 1)
-                return {...state, addresses: cloneAddresses}
-            } else {
-                window.alert('Ошибка удаления адреса')
-                return state
-            }
         default:
             return state;
     }
 }
 
-export default reducer
+const parts = (state = {headerLeft: null, headerRight: 'Burger'}, action : any) => {
+    switch(action.type) {
+        case constants.SET_UP_HEADER:
+            return action.payload
+        default:
+            return state
+    }
+}
+const screen = (state = '', action : any) => {
+    switch(action.type) {
+        case constants.IM_ON_SCREEN:
+            return action.payload
+        default:
+            return state
+    }
+}
+const ProductBottomSheet = (state = {
+	show: false
+}, action: any) => {
+	switch (action.type) {
+		case constants.BOTTOM_SHEET:
+			return action.payload
+		case constants.BOTTOM_SHEET_TOGGLE:
+			return {...state, show: action.payload}
+        default:
+            return state 
+	}
+}
+const INITIAL_SHOP = {
+	categories: [],
+	products: [],
+	indexes: {}
+}
+const shop = (state = INITIAL_SHOP, action : any) => {
+	switch(action.type) {
+        case 'SHOP_FETCH_SUCCEEDED':
+            return action.payload
+        default:
+            return state
+    }
+}
+
+const storage = combineReducers({
+    products,
+    parts,
+    addresses,
+    cart,
+    categories,
+    selected_address,
+    screen,
+	shop,
+	ProductBottomSheet,
+	user
+})
+
+export type RootState = ReturnType<typeof storage>
+
+export default storage

@@ -1,5 +1,6 @@
 import { CART_ADD, SAVE_PRODUCTS, SAVE_CATEGORIES } from '../constants/index';
 
+/** отрицательное count для удаления из корзины */
 export function addToCart({ID, count} : {
     ID: Number,
     count: Number
@@ -12,6 +13,7 @@ export function addToCart({ID, count} : {
         }
     }
 }
+
 
 export function saveProducts(products : {}[]){
     return {

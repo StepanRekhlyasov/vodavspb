@@ -1,16 +1,8 @@
-export function addAddress(address : string) {
+import constants from "../constants/index";
+
+export function setAuth( status : boolean ) {
     return {
-        type: 'ADDRESS_ADD',
-        payload: {
-            address
-        }
-    }
-}
-export function removeAddress(address : string) {
-    return {
-        type: 'ADDRESS_REMOVE',
-        payload: {
-            address
-        }
+        type: constants.SET_AUTH,
+        payload: status
     }
 }

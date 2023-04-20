@@ -1,73 +1,105 @@
-import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
-import { productStyle } from '../styles/product'
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, SafeAreaView, StatusBar, Text, View } from 'react-native';
 import { gStyle } from '../styles/style'
 import { FlatGrid } from 'react-native-super-grid';
 import { connect } from 'react-redux';
 import { addToCart } from '../store/actions/cart';
 import { bindActionCreators } from 'redux';
-import { useNavigation } from '@react-navigation/native';
-import ProdBlock from '../components/product-block'
-import MyButton from '../components/button'
+import { useNavigation, useRoute } from '@react-navigation/native';
+import ProdBlock from '../components/Parts/product-block'
+import MyButton from '../components/Parts/button'
+import { ImOnScreen } from '../store/actions/app'
+
+/** Components */
+import ProductCartControls from '../components/Functional/ProductCartControls';
+import ProductBottomSheet from '../components/Functional/ProductBottomSheet';
+
+/** TS */
+import MyTypes from '../store/types';
+import ToCartFixed from '../components/Functional/ToCartFixed';
+import ToCheckoutFixed from '../components/Functional/ToCheckoutFixed';
+
+interface Payload {
+	shop : {
+		categories: MyTypes['Category'][],
+		products: MyTypes['Product'][]
+	},
+	cart : {
+		ID: number,
+		count: number
+	}[],
+	actions: any
+}
+function Cart({shop, cart, actions} : Payload) {
+	const navigation = useNavigation();
+	const [productsInCart, setProducts] = useState<MyTypes['Product'][]>([])
+
+	useEffect(()=>{
+		let ids_in_cart = cart.reduce((a : number[], b)=>{
+			a.push(b.ID)
+			return a
+		}, [])
+		const result = shop.products.filter((row)=>{
+			return ids_in_cart.includes(row.ID)
+		})
+		setProducts(result)
+	}, [cart])
+
+	const route = useRoute()
+	useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            actions.ImOnScreen(route.name)
+        });
+        return unsubscribe;
+    }, [navigation]);
+
+	const ITEM_HEIGHT = 140
+	const SEPARATOR_HEIGHT = 20
+	const calcFlatLayout = useCallback((data : any, index : any) => {
+		return {length: ITEM_HEIGHT + SEPARATOR_HEIGHT, offset: (ITEM_HEIGHT + SEPARATOR_HEIGHT) * index, index}
+	}, [])
 
 
-function Cart({products, cart, actions, total, total_cost} : any) {
+	const renderListItem = useCallback(({ item, index } : any) => {
+		return (<ProdBlock item={item} navigation={navigation} actions={actions} index={index} ITEM_HEIGHT={ITEM_HEIGHT}/>)
+	}, [])
 
-
-    const navigation = useNavigation();
-
-    let cart_ids : Number[] = []
-    cart.map((row : any)=>{
-        if(row.count>0){
-            cart_ids.push(row.ID) 
-        }
-    })
-    const data = products.filter((row : any)=>{
-        return cart_ids.includes(row.ID)
-    })
-    if(data.length>0){
-        return (
-            <SafeAreaView style={gStyle.box}>
-                <FlatGrid 
-                itemDimension={1000} style={productStyle.gridView} data={data} renderItem={({ item  } : any) => (
-                    <ProdBlock item={item} navigation={navigation} actions={actions} cart={cart}/>
-                )} />
-                <Text style={{fontSize:20,fontWeight:'bold'}}>Детали заказа</Text>
-                <Text>Всего в корзине {total} товаров на {total_cost} рублей</Text>
-                <MyButton
-                    style={{
-                        height: 30,
-                        borderRadius: 10,
-                        backgroundColor: '#f9c5c5',
-                        padding: 10,
-                        marginBottom: 50,
-                        marginTop: 20,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        textAlign: 'center'
-                    }}
-                    text={'Заказать'}
-                />
-            </SafeAreaView>
-        )
-    } else {
-        return (
-            <SafeAreaView style={gStyle.box}>
-                <Text>Ваша корзина пуста</Text>
-            </SafeAreaView>
-        )
-    }
+    return (
+		<View style={{paddingHorizontal: 12, flex:1, paddingTop: 20}}>
+			<StatusBar/>
+			{
+				productsInCart.length ? (
+					<FlatList
+						data={productsInCart}
+						numColumns={1}
+						renderItem={renderListItem}
+						getItemLayout={calcFlatLayout}
+						ItemSeparatorComponent={() => <View style={{height: SEPARATOR_HEIGHT}} />}
+						initialNumToRender={20}
+						maxToRenderPerBatch={50}
+						updateCellsBatchingPeriod={10}
+						windowSize={300}
+						contentContainerStyle={{paddingBottom:50}} 
+					/>
+				) : (
+					<Text>Добавьте в корзину товар для оформления заказа</Text>
+				)
+			}
+			<ProductBottomSheet/>
+			<ToCheckoutFixed/>
+		</View>
+	)
 }
 
 const mapStateToProps = (state : any) => {
-    const { cart, products, total, total_cost } = state
-    return { cart, products, total, total_cost }
+    const { cart, shop, total, total_cost } = state
+    return { cart, shop, total, total_cost }
 };
 
 const mapDispatchToProps = (dispatch : any) => ({
     actions: bindActionCreators({
-        addToCart
+        addToCart,
+		ImOnScreen
     }, dispatch),
 });
 

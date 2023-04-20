@@ -4,7 +4,7 @@ import { gStyle } from '../styles/style'
 import { gridStyle } from '../styles/grid'
 import { FlatGrid } from 'react-native-super-grid';
 import { useState } from 'react';
-import CatBlock from '../components/category-block'
+import CatBlock from '../components/Parts/category-block'
 import * as SplashScreen from 'expo-splash-screen';
 // import { useRoute } from '@react-navigation/native';
 
@@ -70,13 +70,13 @@ export default function Cart({navigation} : any) {
 
     return (
         <SafeAreaView style={gStyle.box} onLayout={onLayoutRootView}>
-                <FlatGrid itemDimension={130} style={gridStyle.gridView} data={categories} renderItem={({ item  } : any) => (
-                    <CatBlock item={item} navigation={navigation} />
-                )} refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />} />
+            {/* <FlatGrid itemDimension={130} style={gridStyle.gridView} data={categories} renderItem={({ item  } : any) => (
+                <CatBlock item={item} navigation={navigation} />
+            )} refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />} /> */}
         </SafeAreaView>
     )
 }
