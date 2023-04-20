@@ -11,6 +11,10 @@ import { bindActionCreators } from 'redux';
 /** Cross-navigation */
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import * as tabNavigator from '../navigator';
+import AddressList from "../components/Address/AddressList";
+import Exit from "../components/Functional/Exit";
+import Map from "../Screens/Map";
+import Authorization from "../Screens/Authorization";
 
 
 const Drawer = createDrawerNavigator();
@@ -22,7 +26,7 @@ const urls = [
 ]
 
 
-const DrawerNavigator = ({parts, screen} : any) => {
+const DrawerNavigator = ({parts, screen, user} : any) => {
 	const [headerTitle, setTitle] = useState(true)
 	const [initialScreen, changeScreen] = useState('Главная')
 	const [headerRight, setHeaderRight] = useState(<Burger/>)
@@ -42,12 +46,12 @@ const DrawerNavigator = ({parts, screen} : any) => {
 
     useEffect(()=>{
 		setupHeader()
-    }, [screen])
+    }, [screen, user])
 
 	/** обработчик хедера при изменении экрана */
 	function setupHeader(){
 		/** скрыть главный хедер */
-		if(['Gated', 'Category'].includes(screen)){
+		if(['Authorization', 'Category', 'Checkout', 'Выбор адреса', 'Map'].includes(screen)){
 			setTitle(false)
 			return
 		} else {
@@ -55,7 +59,11 @@ const DrawerNavigator = ({parts, screen} : any) => {
 			/** левая часть */
 			if(['Профиль'].includes(screen)){
 				setHeaderLeft(<Text style={styles.headerTitle}>Данные профиля</Text>)
-				setHeaderRight(<Burger/>)
+				if(user.is_auth){
+					setHeaderRight(<Exit/>)
+				} else {
+					setHeaderRight(<Burger/>)
+				}
 				return
 			}
 			if(['История', 'Корзина'].includes(screen)){
@@ -63,11 +71,11 @@ const DrawerNavigator = ({parts, screen} : any) => {
 				setHeaderRight(<Burger/>)
 				return
 			}
-			// if(['Профиль'].includes(screen)){
-			// 	setHeaderLeft(<Text style={styles.headerTitle}>Данные профиля</Text>)
-			// 	setHeaderRight(<Burger/>)
-			// 	return
-			// }
+			if(['AddressList'].includes(screen)){
+				setHeaderLeft(<Text style={styles.headerTitle}>Выберите адрес:</Text>)
+				setHeaderRight(<></>)
+				return
+			}
 			if(['Main'].includes(screen)){
 				setHeaderLeft(<AddressHeader/>)
 				setHeaderRight(<Burger/>)
@@ -99,13 +107,33 @@ const DrawerNavigator = ({parts, screen} : any) => {
                 title: '',
 				headerShown: headerTitle,
             }} />
+            <Drawer.Screen 
+			name="AddressList" 
+			component={AddressList}   
+			options={{
+				swipeEnabled : false,
+                headerRight: () => headerRight,
+				headerLeft: () => headerLeft,
+                headerStyle: {borderBottomWidth: 0, backgroundColor: '#F5F5F5', borderColor: 'red'},
+                title: '',
+				headerShown: headerTitle,
+            }} />
+			<Drawer.Screen name="Map" component={Map} options={{
+				headerShown:false,
+			}}
+			/>
+			<Drawer.Screen name="Authorization" component={Authorization} 
+				options={{
+					title: 'Авторизация'
+				}}
+			/>
         </Drawer.Navigator>
     );
 }
 
 const styles = StyleSheet.create({
     wrapper : {
-        paddingHorizontal: 19,
+        paddingHorizontal: 12,
         paddingVertical: 100
     },
     header: {
@@ -115,13 +143,14 @@ const styles = StyleSheet.create({
 		color: '#25263A',
 		fontWeight: 'bold',
 		fontSize: 20,
-		paddingHorizontal: 19,
+		paddingHorizontal: 12,
+		width: 300
 	}
 })
 
 const mapStateToProps = (state : any) => {
-    const { parts, screen } = state
-    return { parts, screen }
+    const { parts, screen, user } = state
+    return { parts, screen, user }
 };
 
 const mapDispatchToProps = (dispatch : any) => ({

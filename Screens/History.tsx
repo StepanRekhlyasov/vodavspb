@@ -1,7 +1,7 @@
 /** React */
 import { useRoute } from "@react-navigation/native";
 import React, { useEffect, ReactElement, FC, FunctionComponent} from "react";
-import { View } from "react-native";
+import { SafeAreaView, StatusBar, Text, View } from "react-native";
 /** Redux */
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -18,7 +18,10 @@ const Template = ({navigation, actions} : any) => {
         return unsubscribe;
     }, [navigation]);
 	return (
-		<></>
+		<View style={{paddingHorizontal: 12, flex:1, paddingTop: 20}}>
+			<StatusBar/>
+			<Text>История заказов скоро будет!</Text>
+		</View>
 	)
 }
 

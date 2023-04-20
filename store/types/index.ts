@@ -1,8 +1,10 @@
 export interface Store {
     total: number,
     cart: Cart[],
-    products: Product[],
-    categories: {}[],
+	shop: {
+		products: Product[],
+		categories: Category[],
+	}
     total_cost: number,
     addresses: Address[],
     selected_address: number | undefined
@@ -36,11 +38,16 @@ export interface Category {
 	name: string,
 	image: string,
 }
+export interface User {
+	ID?: number,
+	is_auth: boolean,
+} 
 interface MyTypes {
+	User : User,
 	Address : Address,
 	Product : Product,
 	Cart : Cart,
 	Store : Store,
-	Category: Category
+	Category: Category,
 }
 export default MyTypes

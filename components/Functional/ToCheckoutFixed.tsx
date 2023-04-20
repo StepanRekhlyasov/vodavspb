@@ -1,13 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Dimensions, Pressable, Text, View } from "react-native";
 import { connect } from "react-redux";
 import { calcusCart } from "../../helpers";
-
-import { Dimensions } from 'react-native';
 /** TS */
 import MyTypes from "../../store/types";
-const ToCartFixed = ({cart, shop, text = 'Перейти в корзину'} : {
+const ToCheckoutFixed = ({cart, shop, text = 'Перейти к оформлению'} : {
 	cart : MyTypes['Cart'][],
 	shop : {
 		products: MyTypes['Product'][],
@@ -29,14 +27,14 @@ const ToCartFixed = ({cart, shop, text = 'Перейти в корзину'} : {
 				left: 0,
 				width: Dimensions.get('window').width,
 				justifyContent: 'center',
-				backgroundColor: '#25263A',
+				backgroundColor: '#1197F8',
 				borderTopLeftRadius: 9,
 				borderTopRightRadius: 9,
 				paddingVertical: 12,
 				paddingHorizontal: 24
 			}}>
 				<Pressable
-					onPress={()=>{navigation.navigate('Cart')}}
+					onPress={()=>{navigation.navigate('Checkout')}}
 				>
 					<View style={{flexDirection:'row', justifyContent: 'space-between'}}>
 						<Text style={{fontSize: 14, fontWeight: '600', color: 'white'}}>{text}</Text>
@@ -55,4 +53,4 @@ const mapStateToProps = (state : MyTypes['Store']) => {
     return { cart, shop }
 };
 
-export default connect(mapStateToProps)(ToCartFixed)
+export default connect(mapStateToProps)(ToCheckoutFixed)

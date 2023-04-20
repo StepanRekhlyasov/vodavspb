@@ -13,6 +13,7 @@ import { geocodeResultToStreet, getSelectedAddress } from '../helpers'
 import MyButton from '../components/Parts/button'
 /** Redux */
 import { addAddress, chooseAddress } from '../store/actions/address'
+import { ImOnScreen } from '../store/actions/app'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -24,6 +25,13 @@ const MAP_KEY = Platform.OS == 'android'?MAP_KEY_DEVELOP:MAP_KEY_DEVELOP
 
 function Map({actions, addresses, navigation} : any) {
     const route : any = useRoute();
+	useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            actions.ImOnScreen(route.name)
+        });
+        return unsubscribe;
+    }, [navigation]);
+
     const [state, setState] : any = useState({
         latitudeDelta,
         longitudeDelta,
@@ -114,7 +122,7 @@ function Map({actions, addresses, navigation} : any) {
         <SafeAreaView style={styles.map}>
             <StatusBar style="auto" />
             {/* {back button to do} */}
-            { route.name == 'Map' &&
+            { route.name == 'Map' && !state.search &&
                 <TouchableOpacity 
                 onPress={()=>{
                     navigation.goBack()
@@ -229,7 +237,8 @@ const mapStateToProps = (state : any) => {
 const mapDispatchToProps = (dispatch : any) => ({
     actions: bindActionCreators({
         addAddress,
-        chooseAddress
+        chooseAddress,
+		ImOnScreen
     }, dispatch),
 });
 

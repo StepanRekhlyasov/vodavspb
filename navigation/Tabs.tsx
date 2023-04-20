@@ -1,28 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Main from "../Screens/Main";
-// import Map from "../Screens/Map";
+import Map from "../Screens/Map";
 import Cart from "../Screens/Cart";
 import History from "../Screens/History";
-import Catalog from "../Screens/Catalog";
 import Profile from "../Screens/Profile";
 import Category from "../Screens/Category";
 import Product from "../Screens/Product";
 import PhoneNumber from "../Screens/PhoneNumber";
-import { NavigationContainer, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Platform, View, Text } from 'react-native';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Otp from "../Screens/Otp";
-import Gated from "../Screens/Gated";
-// import Header from "../components/Parts/Burger";
+import Authorization from "../Screens/Authorization";
 /** Icons */
 import { Feather, Octicons, AntDesign } from '@expo/vector-icons'; 
+import Checkout from "../Screens/Checkout";
+import AddressList from "../components/Address/AddressList";
 
 
 const Tab = createBottomTabNavigator();
@@ -40,7 +37,6 @@ function TabsNavigator ({cart} : any) {
 				tabBarItemStyle: {
 					height: 48
 				},
-				// tabBarLabel: (item)=><>{JSON.stringify(item)}</>
 		  	}}
 		>
             <Tab.Screen name="Главная" component={MyCatalog} 
@@ -51,7 +47,7 @@ function TabsNavigator ({cart} : any) {
 					),
 				}}
 			/>
-			<Tab.Screen name="Корзина" component={Cart} 
+			<Tab.Screen name="Cart" component={MyCart} 
 				options={{
 					headerShown:false,
 					tabBarIcon: ({ color, size }) => (
@@ -66,16 +62,9 @@ function TabsNavigator ({cart} : any) {
 					<Octicons name="history" color={color} size={size} />
                 ),
             }} />
-            {/* <Tab.Screen name="Shop" component={MyCatalog} 
-                options={{
-					headerShown:false, title: "Каталог",
-					tabBarIcon: ({ color, size }) => (
-						<MaterialCommunityIcons name="water-check-outline" color={color} size={size} />
-					),
-                }}
-            /> */}
-            <Tab.Screen name="Профиль" component={MyProfile} options={{
-                headerShown:false,
+            <Tab.Screen name="MyProfile" component={MyProfile} options={{
+				tabBarLabel: 'Профиль',
+                headerShown: false,
                 tabBarIcon: ({ color, size }) => (
                 	<MaterialCommunityIcons name="account-box" color={color} size={size} />
                 ),
@@ -83,7 +72,18 @@ function TabsNavigator ({cart} : any) {
         </Tab.Navigator>
     );
 }
-
+function MyCart(){
+	return (
+		<Stack.Navigator>
+			<Stack.Screen name="Корзина" component={Cart} options={{headerShown:false}} />
+			<Stack.Screen name="Checkout" component={Checkout} options={
+				{
+					headerShown:true,
+					title: 'Оформление заказа'
+				}} />
+		</Stack.Navigator>
+	)
+}
 function MyCatalog() {
     return (
       <Stack.Navigator>
@@ -98,7 +98,7 @@ function MyProfile(){
     return(
         <Stack.Navigator>
             { 1 ? (
-                <Tab.Screen name="Profile" component={Profile} options={{
+                <Tab.Screen name="Профиль" component={Profile} options={{
                   headerShown:false,
                   tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="account-box" color={color} size={size} />
@@ -112,12 +112,9 @@ function MyProfile(){
                 }}/>
               )
             }
-          <Stack.Screen name="Map" component={Map} options={{
-            headerShown:false,
-          }}
-          />
-          <Stack.Screen name="Otp" component={Otp} />
-          <Stack.Screen name="Gated" component={Gated} />
+			<Stack.Screen name="Otp" component={Otp} />
+			
+			{/* <Stack.Screen name="Выбор адреса" component={AddressList} options={{headerShown:true}} /> */}
       </Stack.Navigator>
     )
 }

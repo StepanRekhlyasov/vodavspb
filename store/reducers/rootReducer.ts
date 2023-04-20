@@ -1,9 +1,18 @@
 import constants from '../constants/index';
-import { inCart, countTotalCart, countCostCart } from '../../helpers'
 import type { Address, Store } from '../types'
 import {Alert} from 'react-native' 
 import { combineReducers } from 'redux'
+import MyTypes from '../types';
 
+
+const user = (state : MyTypes['User'] = {is_auth: false}, action : any) => {
+	switch(action.type) {
+		case constants.SET_AUTH:
+			return {...state, is_auth: action.payload}
+        default: 
+            return state
+    }
+}
 const products = (state = [], action : any) => {
     switch(action.type) {
         case constants.SAVE_PRODUCTS:
@@ -50,7 +59,11 @@ const cart = (state : {ID: number, count: number}[] = [], action : any) => {
 					})
 				}
 			} else {
-				return [...state, action.payload]
+				if(action.payload.count<1){
+					return state
+				} else {
+					return [...state, action.payload]
+				}
 			}
         default: 
             return state
@@ -146,7 +159,8 @@ const storage = combineReducers({
     selected_address,
     screen,
 	shop,
-	ProductBottomSheet
+	ProductBottomSheet,
+	user
 })
 
 export type RootState = ReturnType<typeof storage>

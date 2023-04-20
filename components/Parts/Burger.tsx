@@ -11,6 +11,9 @@ import { Entypo } from '@expo/vector-icons';
 
 export default function Burger({leftInclude} : {leftInclude?: JSX.Element}) {
     const navigation = useNavigation();
+	return (
+		<></>
+	)
     return (
         <View style={styles.burgerWrapper}>
             <Pressable style={styles.burger} onPress={()=>navigation.dispatch(DrawerActions.openDrawer())}>

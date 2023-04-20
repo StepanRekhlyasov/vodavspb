@@ -7,7 +7,6 @@ import { addToCart, saveProducts } from '../store/actions/cart';
 import { ImOnScreen } from '../store/actions/app';
 import { bindActionCreators } from 'redux';
 import { useScrollToTop } from '@react-navigation/native';
-
 /** Redux */
 import { SetUpHeader } from '../store/actions/app';
 import { BottomSheetToggler } from '../store/actions/app';
@@ -25,8 +24,7 @@ import ToCartFixed from '../components/Functional/ToCartFixed';
 
 // type Categories = Category[]
 const Main = memo(({actions, navigation, shop, ProductBottomSheet } : any) => {
-	console.log('mega render')
-	const dispatch = useDispatch();
+	
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             actions.ImOnScreen('Main')
@@ -55,6 +53,7 @@ const Main = memo(({actions, navigation, shop, ProductBottomSheet } : any) => {
 		prepare().then(() => setRefreshing(false));
 	};
 
+	const dispatch = useDispatch();
     async function prepare() {
 		dispatch({type: 'SHOP_FETCH_REQUESTED', payload: 'jaja'})
     }
@@ -73,8 +72,6 @@ const Main = memo(({actions, navigation, shop, ProductBottomSheet } : any) => {
     }, [shop]);
 
 	const ITEM_HEIGHT = 140
-	const HEADER_HEIGHT = 50
-	const SPECIAL_HEIGHT = ITEM_HEIGHT
 	const SEPARATOR_HEIGHT = 20
 	const calcFlatLayout = useCallback((data : any, index : any) => {
 		return {length: ITEM_HEIGHT + SEPARATOR_HEIGHT, offset: (ITEM_HEIGHT + SEPARATOR_HEIGHT) * index, index}
@@ -84,18 +81,7 @@ const Main = memo(({actions, navigation, shop, ProductBottomSheet } : any) => {
 	const renderListItem = useCallback(({ item, index } : any) => {
 		return (<ProdBlock item={item} navigation={navigation} actions={actions} index={index} ITEM_HEIGHT={ITEM_HEIGHT}/>)
 	}, [])
-	const styles = StyleSheet.create({
-		slider_cats: { 
-			backgroundColor: 'red',
-			flexGrow: 1,
-		},
-		header: {
-			color: 'black',
-			height: HEADER_HEIGHT,
-			lineHeight: HEADER_HEIGHT,
-			fontSize: 24,
-		}
-	})
+
 	const viewabilityConfig = {
 		viewAreaCoveragePercentThreshold: 100,
 	}
@@ -113,12 +99,14 @@ const Main = memo(({actions, navigation, shop, ProductBottomSheet } : any) => {
 				<ScrollView 
 					horizontal={true}
 					showsHorizontalScrollIndicator={false}
-					contentContainerStyle={styles.slider_cats}
+					contentContainerStyle={{flexGrow: 1}}
 					scrollEventThrottle={200}
 					decelerationRate="fast"
 					nestedScrollEnabled = {true}
 					style={{
-						flexGrow: 0
+						flexGrow: 0,
+						marginBottom: 10,
+						marginTop: 10
 					}}
 					ref = {catListRef}
 				>
@@ -140,6 +128,7 @@ const Main = memo(({actions, navigation, shop, ProductBottomSheet } : any) => {
 				maxToRenderPerBatch={50}
 				updateCellsBatchingPeriod={10}
 				windowSize={300}
+				contentContainerStyle={{paddingBottom:50}} 
 			/>
 			{ ProductBottomSheet.show &&
 				<Pressable 
@@ -148,7 +137,7 @@ const Main = memo(({actions, navigation, shop, ProductBottomSheet } : any) => {
 				></Pressable>
 			}
 			<ProductBottomSheetComponent/>
-			<ToCartFixed/>
+				<ToCartFixed/>
 		</SafeAreaView>
     ) 
 })

@@ -10,7 +10,6 @@ const CategorySlider = ({categories, sectionPosition, flatListRef, indexes} : {
 	flatListRef: any, 
 	indexes: any
 }) => {
-	// console.log('sections rerenders')
 	useEffect(()=>{
 		const result = categories.map(
 			(item, index : number)=>(<CatBlock 

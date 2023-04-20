@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Otp from "./Screens/Otp";
-import Gated from "./Screens/Gated";
+import Authorization from "./Screens/Authorization";
 
 // const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

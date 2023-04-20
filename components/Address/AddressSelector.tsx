@@ -13,7 +13,9 @@ import { Dimensions } from 'react-native';
 /** helpers */
 import { getSelectedAddress } from '../../helpers'
 import {Alert} from 'react-native' 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import AddressBottomSheet from "../Functional/AddressBottomSheet";
+import { createStackNavigator } from "@react-navigation/stack";
 
 
 type PayLoad = {
@@ -25,8 +27,12 @@ type PayLoad = {
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
+const Stack = createStackNavigator();
+
+
 function AddressSelector({ addresses, selected_address, actions } : PayLoad) {
     const [showList, toggleList] = useState(false)
+	const route = useRoute()
     const navigation = useNavigation()
     const selectedAddress = getSelectedAddress()
     const toMaps = () => {
@@ -39,12 +45,10 @@ function AddressSelector({ addresses, selected_address, actions } : PayLoad) {
     const editable = selectedAddress?true:false
     return (
         <View style={styles.container}>
-            {showList && 
-                (<AddressList toggleList={toggleList}/>)
-            }
             <View style={[styles.flexBetween, {marginBottom:14}]}>
                 <Text style={{fontSize: 16,fontWeight: 'bold'}}>Адрес доставки</Text>
-                <Pressable onPress={()=>{toggleList(true)}}><Text style={{fontSize: 14}}>Выбрать из списка</Text></Pressable>
+                <Pressable onPress={()=>{(navigation as any).navigate('AddressList')}}><Text style={{fontSize: 14}}>Выбрать из списка</Text></Pressable>
+                {/* <Pressable onPress={()=>{toggleList(true)}}><Text style={{fontSize: 14}}>Выбрать из списка</Text></Pressable> */}
             </View>
             <MyButton text={name} options={{
                 height: 35,
@@ -82,7 +86,6 @@ const mapDispatchToProps = (dispatch : any) => ({
 const styles = StyleSheet.create({
     container : {
         width: '100%',
-        paddingHorizontal: 10
     },
     flexBetween: {
         alignItems: 'flex-end',

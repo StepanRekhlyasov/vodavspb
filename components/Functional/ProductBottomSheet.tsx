@@ -20,7 +20,7 @@ const ProductBottomSheetComponent = ({actions, ProductBottomSheet, shop, inCart}
 	}, [inCart])
 	
 
-	useMemo(() => {
+	useEffect(() => {
 		const prod = shop.products.find((row: {ID: number})=>row.ID==ProductBottomSheet.ID)
 		if(prod){
 			setProduct(prod)
@@ -38,9 +38,9 @@ const ProductBottomSheetComponent = ({actions, ProductBottomSheet, shop, inCart}
 
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 	const snapPoints = useMemo(() => ['90%'], []);
-	const handleSheetChanges = useCallback((index: number) => {
+	const handleSheetChanges = (index: number) => {
 		actions.BottomSheetToggler(index<0?false:true)
-	}, []);
+	}
 	if(product){
 		return (
 			<BottomSheetModalProvider>
@@ -66,7 +66,6 @@ const ProductBottomSheetComponent = ({actions, ProductBottomSheet, shop, inCart}
 							<ProductCartControls product={product} inModal={true} />
 						</View>
 						<View style={style.centerWrapper}>
-							{/* <Text>{JSON.stringify(product)}</Text> */}
 							<FlatList
 								data={sortedPrices}
 								renderItem={({item})=>(

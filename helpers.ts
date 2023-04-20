@@ -16,14 +16,14 @@ export function inCart(id : Number, cart : Cart[]){
         }
     }
 }
-export function countInCart(id : Number, cart : Cart[]){
-    const index = cart.findIndex((item : any) => item.ID == id)
-    if(cart[index]){
-        return cart[index].count
-    } else {
-        return 0
-    }
-}
+// export function countInCart(id : Number, cart : Cart[]){
+//     const index = cart.findIndex((item : any) => item.ID == id)
+//     if(cart[index]){
+//         return cart[index].count
+//     } else {
+//         return 0
+//     }
+// }
 // export function addOne({item, cart} : {
 //     item: Product,
 //     cart: Cart[]
@@ -159,7 +159,7 @@ export const calcusCart = {
 		if(result){
 			return parseInt(result.price)
 		} else {
-			return 0
+			return parseInt(sorted.slice(-1)[0].price);
 		}
 	},
 	cartSum: ({cart, shop} : any) => {
